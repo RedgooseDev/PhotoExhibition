@@ -1,0 +1,31 @@
+@mixin font-circular($weight:null)
+{
+	font-family: 'Lucida Grande', 'Helvetica Neue', 'Arial', sans-serif;
+	@if $weight
+	{
+		font-weight: $weight;
+	}
+}
+
+@mixin cross($width:30px, $height: 30px, $weight: 2px, $color: #fff, $rotate: 0)
+{
+	position: relative; width: $width; height: $height;
+	@if $rotate
+	{
+		-webkit-transform: rotateZ($rotate);
+		transform: rotateZ($rotate);
+	}
+	&:before, &:after {
+		content: ''; position: absolute; display: block;
+		background: $color;
+	}
+	&:before {
+		width: $weight; height: 100%;
+		top: 0; left: 50%; margin-left: -#{$weight/2};
+	}
+	&:after {
+		height: $weight; width: 100%;
+		left: 0; top: 50%; margin-top: -#{$weight/2};
+
+	}
+}
