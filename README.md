@@ -6,7 +6,8 @@
 ----------------------------
 
 * 4TH Online Photo Exhibition : http://display.redgoose.me/4th/
-* DEMO : __http://...__
+* Demo : __http://...__
+* goose-dev article : http://src.goose-dev.com/article/3/
 
 ----------------------------
 
@@ -15,7 +16,7 @@
 
 ...
 
-### {APP}/libs/base.user.php
+### make base.user.php
 
 다음 내용으로 `{APP}/libs/base.user.php` 경로와 파일 이름으로 만들어주시고, 자신의 서버 환경에 맞게 경로와 둥지 번호를 꼭 설정해주세요.
 
