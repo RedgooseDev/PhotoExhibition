@@ -5,9 +5,12 @@
 
 ----------------------------
 
-* 4TH Online Photo Exhibition : http://display.redgoose.me/4th/
-* Demo : http://projects.redgoose.me/2015/goose/app/photo-exhibition/
-* goose-dev article : http://src.goose-dev.com/article/3/
+* 4TH Online Photo Exhibition  
+http://display.redgoose.me/4th/
+* Demo  
+http://projects.redgoose.me/2015/goose/app/photo-exhibition/
+* goose-dev article  
+http://src.goose-dev.com/article/3/
 
 ----------------------------
 
