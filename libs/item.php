@@ -132,7 +132,7 @@ switch($_GET['type'])
 			{
 				$item = [
 					'srl' => $v['srl'],
-					'img' => __GOOSE_URL__.'/'.$v['json']['thumnail']['url'],
+					'img' => __GOOSE_URL__.'/'.$v['json']['thumbnail']['url'],
 					'title' => $v['title']
 				];
 				$output['result'][] = $item;
@@ -149,7 +149,6 @@ switch($_GET['type'])
 			$output['next'] = (0 < count($repo['next_article_count'])) ? true : false;
 		}
 		break;
-
 }
 
 

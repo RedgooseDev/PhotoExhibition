@@ -17,7 +17,7 @@ var src = './src';
 var vendors = {
 	js : [
 		'./node_modules/jquery/dist/jquery.min.js',
-		'./node_modules/react/dist/react.js',
+		'./node_modules/react/dist/react.min.js',
 		'./node_modules/react-dom/dist/react-dom.min.js',
 		'./node_modules/fastclick/lib/fastclick.min.js',
 		'./src/vendor/Swipe/swipe.min.js'
