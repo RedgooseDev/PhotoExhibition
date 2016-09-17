@@ -27,10 +27,11 @@ $repo = [];
 $output = [ 'result' => [] ];
 
 // set nest data
-$nest = Module::load('nest');
-$repo['nest'] = $nest->getItem([
-	'where' => 'srl='.$nest_srl
-])['data'];
+$repo['nest'] = core\Spawn::item([
+	'table' => core\Spawn::getTableName('Nest'),
+	'where' => 'srl='.$nest_srl,
+	'jsonField' => ['json']
+]);
 
 
 switch($_GET['type'])
@@ -43,27 +44,23 @@ switch($_GET['type'])
 		}
 		hitUpdate($_GET['srl']);
 
-		// set article
-		$article = Module::load('article');
-		$file = Module::load('file');
-
 		// get article
-		$repo['article'] = $article->getItem([
-			'where' => 'srl='.(int)$_GET['srl']
+		$repo['article'] = core\Spawn::item([
+			'table' => core\Spawn::getTableName('Article'),
+			'where' => 'srl=' . (int)$_GET['srl'],
+			'jsonField' => ['json']
 		]);
-		$repo['article'] = ($repo['article']['state'] == 'success') ? $repo['article']['data'] : null;
 
 		// get files
-		$repo['files'] = $file->getItems([
-			'where' => 'article_srl='.(int)$_GET['srl'],
-			'debug' => false
+		$repo['files'] = core\Spawn::items([
+			'table' => core\Spawn::getTableName('File'),
+			'where' => 'article_srl=' . (int)$_GET['srl']
 		]);
-		$repo['file'] = ($repo['files']['state'] == 'success') ? $repo['files']['data'][0] : null;
 
 		// set output
 		$output = [
 			'srl' => $repo['article']['srl'],
-			'img' => __GOOSE_URL__.'/'.$repo['file']['loc'],
+			'img' => __GOOSE_URL__ . '/' . $repo['file']['loc'],
 			'title' => $repo['article']['title']
 		];
 		break;
@@ -71,23 +68,23 @@ switch($_GET['type'])
 	// article - view index
 	case 'viewIndex':
 
-		$articles = Spawn::items([
-			'table' => Spawn::getTableName('article'),
+		$articles = core\Spawn::items([
+			'table' => core\Spawn::getTableName('Article'),
 			'field' => 'srl,title',
-			'where' => 'nest_srl='.$nest_srl
+			'where' => 'nest_srl=' . $nest_srl
 		]);
 
 		foreach ($articles as $k=>$v)
 		{
-			$file = Spawn::item([
-				'table' => Spawn::getTableName('file'),
+			$file = core\Spawn::item([
+				'table' => core\Spawn::getTableName('File'),
 				'field' => 'loc',
-				'where' => 'article_srl='.$v['srl']
+				'where' => 'article_srl=' . $v['srl']
 			]);
 
 			$output['result'][] = [
 				'srl' => $v['srl'],
-				'img' => __GOOSE_URL__.'/'.$file['loc'],
+				'img' => __GOOSE_URL__ . '/' . $file['loc'],
 				'title' => $v['title']
 			];
 		}
@@ -101,31 +98,28 @@ switch($_GET['type'])
 
 	// article - index
 	default:
-		require_once(__GOOSE_PWD__.'core/classes/Paginate.class.php');
-
 		$_GET['page'] = ((int)$_GET['page'] > 1) ? (int)$_GET['page'] : 1;
 
-		// set article
-		$article = Module::load('article');
-
 		// get count
-		$count = $article->getCount([
-			'where' => 'nest_srl='.$nest_srl
-		])['data'];
+		$count = core\Spawn::count([
+			'table' => core\Spawn::getTableName('Article'),
+			'where' => 'nest_srl=' . $nest_srl
+		]);
 
 		if ($count)
 		{
 			// set paginate
-			$paginate = new Paginate($count, $_GET['page'], [], $defaultItemCount, 10);
+			$paginate = new core\Paginate($count, $_GET['page'], [], $defaultItemCount, 10);
 
 			// get article data
-			$repo['articles'] = $article->getItems([
-				'where' => 'nest_srl='.$nest_srl,
+			$repo['articles'] = core\Spawn::items([
+				'table' => core\Spawn::getTableName('Article'),
+				'where' => 'nest_srl=' . $nest_srl,
 				'limit' => [$paginate->offset, $paginate->size],
+				'order' => 'srl',
 				'sort' => 'asc',
-				'debug' => false
+				'jsonField' => ['json']
 			]);
-			$repo['articles'] = ($repo['articles']['state'] == 'error') ? [] : $repo['articles']['data'];
 
 			// set output data
 			foreach($repo['articles'] as $k=>$v)
@@ -139,13 +133,13 @@ switch($_GET['type'])
 			}
 
 			$next_page = $_GET['page'] + 1;
-			$next_paginate = new Paginate($count, $next_page, [], $defaultItemCount, 10);
-			$repo['next_article_count'] = $article->getItems([
+			$next_paginate = new core\Paginate($count, $next_page, [], $defaultItemCount, 10);
+			$repo['next_article_count'] = core\Spawn::items([
+				'table' => core\Spawn::getTableName('Article'),
 				'field' => 'srl',
 				'where' => 'nest_srl='.$nest_srl,
-				'limit' => [$next_paginate->offset, $next_paginate->size],
-				'debug' => false
-			])['data'];
+				'limit' => [$next_paginate->offset, $next_paginate->size]
+			]);
 			$output['next'] = (0 < count($repo['next_article_count'])) ? true : false;
 		}
 		break;
@@ -155,4 +149,4 @@ switch($_GET['type'])
 // print output
 echo json_encode($output);
 
-Goose::end();
+core\Goose::end();

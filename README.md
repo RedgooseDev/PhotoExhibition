@@ -39,7 +39,7 @@ session_start();
 define('__GOOSE__', true);
 define('__DEBUG__', false);
 define('__GOOSE_ROOT__', 'http://localhost/goose');
-define('__GOOSE_LIB__', '../goose/core/lib.php');
+define('__GOOSE_LIB__', '../goose/bootstrap/lib.php');
 define('__PWD__', str_replace('base.user.php', '', str_replace('\\', '/', __FILE__)));
 define('__URL__', 'http://localhost/PhotoExihibition');
 define('__ROOT__', '/PhotoExihibition');

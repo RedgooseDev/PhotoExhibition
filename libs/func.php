@@ -16,8 +16,8 @@ function hitUpdate($srl)
 	}
 
 	// get article data
-	$article = Spawn::item([
-		'table' => Spawn::getTableName('article')
+	$article = core\Spawn::item([
+		'table' => core\Spawn::getTableName('Article')
 		,'field' => 'srl,hit'
 		,'where' => 'srl='.$srl
 	]);
@@ -34,8 +34,8 @@ function hitUpdate($srl)
 		setcookie('hit-'.$article['srl'], 1, time()+3600*24);
 		// update db
 		$article['hit'] += 1;
-		$result = Spawn::update([
-			'table' => Spawn::getTableName('article')
+		$result = core\Spawn::update([
+			'table' => core\Spawn::getTableName('Article')
 			,'where' => 'srl='.$article['srl']
 			,'data' => [
 				'hit='.$article['hit']
